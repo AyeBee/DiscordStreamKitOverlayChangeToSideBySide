@@ -1,0 +1,84 @@
+/*
+ # Discord StreamKit Overlay のHTML構成の概要
+
+ body
+   +- div#app-mount
+     +- div
+       +- div.voice-container
+         +- ul.voice-states
+           +- li.voice-state[data-reactid*=MEMBER_ID1] ← 1人目のメンバー
+           | +- img.avater
+           | +- div.user
+           |   +- span.name
+           |
+           +- li.voice-state[data-reactid*=MEMBER_ID2] ← 2人目のメンバー
+           | +- img.avater
+           | +- div.user
+           |   +- span.name
+           |
+           +- li.voice-state[data-reactid*=MEMBER_ID3] ← 3人目のメンバー
+           | +- img.avater
+           | +- div.user
+           |   +- span.name
+           |
+           : 以降、参加してるメンバーの人数分続く…
+*/
+
+/* コア部分の設定 */
+body {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.voice-states {
+  display: flex;
+  gap: 10px; /* 各メンバー間の隙間の広さ */
+}
+.voice-state {
+  display: block;
+  text-align: center;
+  position: relative;
+}
+.avatar, .user {
+  display: block;
+  float: none !important;
+  margin: auto !important;
+}
+.avatar {  /* ベースとなる無音時のスタイル */
+  content: var(--player-iocn);
+  filter: brightness(50%); /* 輝度の設定 : 無音時は暗くする */
+  border-radius: 0% !important;  /* アイコンの角マル具合の設定 : 角を丸くしたい場合は50%を指定 */
+
+  /* 幅(width) 高さ(height) はデフォルトで50pxが指定されている。書き換えたい場合はここで指定する。 */
+  width: 50px !important;
+  height: 50px !important;
+}
+.avatar.speaking { /* 上に加えて、発言時のスタイル */
+  border-color: transparent !important;
+  filter: brightness(100%); /* 輝度の設定 : 発言時は100%に */
+}
+.user {
+  padding: 4px 5px 0px !important;
+  border-radius: 4px;
+}
+.name {
+  height: 17px;
+  line-height: 17px !important;
+  white-space: nowrap;
+  background: rgba(0,0,0,.7);
+}
+/* コア部分の設定 ここまで */
+
+/* メンバー別設定 : 「N人目のID」 と 「N人目の画像URL」は適宜書き換えてください。 */
+li.voice-state[data-reactid*="1人目のID"] .avatar {
+  --player-iocn: url("1人目の画像URL");
+}
+li.voice-state[data-reactid*="2人目のID"] .avatar {
+  --player-iocn: url("2人目の画像URL");
+}
+li.voice-state[data-reactid*="3人目のID"] .avatar {
+  --player-iocn: url("3人目の画像URL");
+}
+/* 以降、プレイヤー人数分追加する */
+/* メンバー別設定 ここまで */
